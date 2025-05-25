@@ -4,8 +4,8 @@ import 'package:testingapp/src/authentication/domain/repositories/authentication
 
 import '../entities/user.dart';
 
-class GetUser extends UsecaseWithoutParams<List<User>> {
-  const GetUser(this._repository);
+class GetUsers extends UsecaseWithoutParams<List<User>> {
+  const GetUsers(this._repository);
 
   final AuthenticationRepository _repository;
 
