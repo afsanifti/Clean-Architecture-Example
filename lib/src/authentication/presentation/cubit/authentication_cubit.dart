@@ -1,8 +1,49 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../domain/entities/user.dart';
+import '../../domain/usecases/create_user.dart';
+import '../../domain/usecases/get_users.dart';
+
 part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
-  AuthenticationCubit() : super(AuthenticationInitial());
+  AuthenticationCubit({
+    required CreateUser createUser,
+    required GetUsers getUser,
+  }) : _createUser = createUser,
+       _getUsers = getUser,
+       super(const AuthenticationInitial());
+
+  final CreateUser _createUser;
+  final GetUsers _getUsers;
+
+  Future<void> createUser({
+    required String createdAt,
+    required String name,
+    required String avatar,
+  }) async {
+    emit(const CreatingUser());
+
+    final result = await _createUser(
+      CreateUserParams(createdAt: createdAt, name: name, avatar: avatar),
+    );
+
+    result.fold(
+      (failure) => emit(AuthenticationError(failure.errorMessage)),
+      (_) => emit(const UserCreated()),
+    );
+  }
+
+  Future<void> getUser() async {
+    emit(const GettingUsers());
+    final result = await _getUsers();
+
+    result.fold(
+      (failure) => emit(AuthenticationError(failure.errorMessage)),
+      // the GetUser call returns a List of User
+      // which is passed to the UsersLoaded
+      (user) => emit(UsersLoaded(user)),
+    );
+  }
 }
