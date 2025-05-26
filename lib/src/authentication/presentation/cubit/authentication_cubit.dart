@@ -10,9 +10,9 @@ part 'authentication_state.dart';
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit({
     required CreateUser createUser,
-    required GetUsers getUser,
+    required GetUsers getUsers,
   }) : _createUser = createUser,
-       _getUsers = getUser,
+       _getUsers = getUsers,
        super(const AuthenticationInitial());
 
   final CreateUser _createUser;
