@@ -40,5 +40,5 @@ Future<void> init() async {
 
     // External Dependency
       // .new will create a new instance of it
-    ..registerLazySingleton(() => http.Client.new);
+    ..registerLazySingleton(() => http.Client());
 }
